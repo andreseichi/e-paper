@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import { FilterDocumentButton } from "./_components/filter-document-button";
 import { columns, type Document } from "./_components/table/columns";
 import { DataTable } from "./_components/table/data-table";
 
@@ -143,7 +143,6 @@ const tableData = [
     date: "2021-08-15",
     updatedDate: "2021-08-15",
   },
-
 ] as Document[];
 
 export default function HomePage() {
@@ -159,7 +158,7 @@ export default function HomePage() {
               </span>
             </div>
 
-            <div className="flex items-center space-x-4 justify-between max-sm:flex-col">
+            <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
               <div className="h-10 space-y-2 max-md:w-full">
                 <div className="relative">
                   <Input
@@ -172,9 +171,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <Button variant="outline" className="h-10">
-                <Filter size={16} /> Filtrar
-              </Button>
+              <FilterDocumentButton />
             </div>
           </div>
 
