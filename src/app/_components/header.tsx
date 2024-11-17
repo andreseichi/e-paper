@@ -10,7 +10,8 @@ export function Header() {
 
   return (
     <header className="sticky top-0 flex min-h-[72px] items-center border-b px-6">
-      {isMobile && <SidebarTrigger />}
+      {isMobile && <SidebarTrigger className="mr-4" />}
+      
       <div className="flex items-center space-x-2">
         <Send size={28} />
         <span className="text-lg font-bold">e-paper</span>

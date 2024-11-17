@@ -1,13 +1,11 @@
-import {
-  SidebarInset,
-  SidebarProvider
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Header } from "./_components/header";
 import { AppSidebar } from "./_components/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -26,7 +24,7 @@ export default function RootLayout({
     >
       <body>
         <SidebarProvider
-        defaultOpen={false}
+          defaultOpen={false}
           className="h-screen"
           style={
             {
@@ -38,6 +36,7 @@ export default function RootLayout({
           <SidebarInset>
             <Header />
             {children}
+            <Toaster />
           </SidebarInset>
         </SidebarProvider>
       </body>
