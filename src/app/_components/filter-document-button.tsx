@@ -68,16 +68,18 @@ const documentTypes = [
   { label: "Nota fiscal de transporte", value: "nft" },
 ] as const;
 
+const defaultValues: FormValues = {
+  dob: undefined,
+  type: "",
+  issuer: "",
+  value: 0,
+  totalValue: 0,
+};
+
 export function FilterDocumentButton() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      dob: undefined,
-      type: "",
-      issuer: "",
-      value: 0,
-      totalValue: 0,
-    },
+    defaultValues,
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -268,8 +270,8 @@ export function FilterDocumentButton() {
                           placeholder="Valor em R$"
                           onValueChange={({ floatValue }) =>
                             field.onChange(floatValue)
-                        }
-                        value={field.value}
+                          }
+                          value={field.value}
                           onBlur={field.onBlur}
                           disabled={field.disabled}
                         />
@@ -306,11 +308,13 @@ export function FilterDocumentButton() {
               <Separator />
 
               <SheetFooter>
-                <Button variant="outline" onClick={() => form.reset()}>
+                <Button
+                  variant="outline"
+                  onClick={() => form.reset(defaultValues)}
+                >
                   Limpar
                 </Button>
-                {/* <Button type="submit" disabled={!form.formState.isDirty}> */}
-                <Button type="submit">
+                <Button type="submit" disabled={!form.formState.isDirty}>
                   Aplicar filtro
                 </Button>
               </SheetFooter>
