@@ -1,14 +1,14 @@
 "use client";
 
-import { type ColumnDef } from "@tanstack/react-table";
-import { TransactionTableHeader } from "./transaction-table-header";
-import { Ellipsis, Trash, View } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { type ColumnDef } from "@tanstack/react-table";
+import { Ellipsis, Trash, View } from "lucide-react";
 
 export type Document = {
   id: string;
@@ -20,15 +20,51 @@ export type Document = {
   updatedDate: string;
 };
 
+export const documentTypes = [
+  { label: "Nota fiscal de serviço", value: "nfs" },
+  { label: "Contrato de prestação de serviço", value: "cps" },
+  { label: "Nota fiscal de produto", value: "nfp" },
+  { label: "Nota fiscal de importação", value: "nfi" },
+  { label: "Nota fiscal de exportação", value: "nfe" },
+  { label: "Nota fiscal de transporte", value: "nft" },
+];
+
+export const originDocuments = [
+  { value: "1", label: "Digitalizado" },
+  {
+    value: "2",
+    label: "Importado",
+  },
+];
+
 export const columns: ColumnDef<Document>[] = [
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <TransactionTableHeader
-        label="Nome do documento"
-        sortDirection={column.getIsSorted() as string}
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Selecionar todos os documentos"
       />
     ),
+    cell: ({ row }) => (
+      <div className="">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Selecionar linha"
+        />
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: () => <span className="mr-2">Nome do documento</span>,
     footer: ({ column }) => (
       <div className="flex flex-col text-xs font-normal text-neutral-500">
         Total{" "}
@@ -43,12 +79,7 @@ export const columns: ColumnDef<Document>[] = [
   },
   {
     accessorKey: "issuer",
-    header: ({ column }) => (
-      <TransactionTableHeader
-        label="Emitente"
-        sortDirection={column.getIsSorted() as string}
-      />
-    ),
+    header: () => <span className="mr-2">Emitente</span>,
     footer: ({ column }) => (
       <div className="flex flex-col text-xs font-normal text-neutral-500">
         Total
@@ -71,12 +102,7 @@ export const columns: ColumnDef<Document>[] = [
   },
   {
     accessorKey: "value",
-    header: ({ column }) => (
-      <TransactionTableHeader
-        label="Valor dos tributos"
-        sortDirection={column.getIsSorted() as string}
-      />
-    ),
+    header: () => <span className="mr-2">Valor dos tributos</span>,
     cell: ({ row }) => (
       <span>
         {new Intl.NumberFormat("pt-BR", {
@@ -103,12 +129,7 @@ export const columns: ColumnDef<Document>[] = [
   },
   {
     accessorKey: "totalValue",
-    header: ({ column }) => (
-      <TransactionTableHeader
-        label="Valor líquido"
-        sortDirection={column.getIsSorted() as string}
-      />
-    ),
+    header: () => <span className="mr-2">Valor líquido</span>,
     cell: ({ row }) => (
       <span>
         {new Intl.NumberFormat("pt-BR", {
@@ -138,12 +159,7 @@ export const columns: ColumnDef<Document>[] = [
   },
   {
     accessorKey: "date",
-    header: ({ column }) => (
-      <TransactionTableHeader
-        label="Data de criação"
-        sortDirection={column.getIsSorted() as string}
-      />
-    ),
+    header: () => <span className="mr-2">Data de criação</span>,
     cell: ({ row }) =>
       new Date(row.original.date).toLocaleDateString("pt-BR", {
         day: "numeric",
@@ -153,12 +169,7 @@ export const columns: ColumnDef<Document>[] = [
   },
   {
     accessorKey: "updatedDate",
-    header: ({ column }) => (
-      <TransactionTableHeader
-        label="Última atualização"
-        sortDirection={column.getIsSorted() as string}
-      />
-    ),
+    header: () => <span className="mr-2">Última atualização</span>,
     cell: ({ row }) =>
       new Date(row.original.updatedDate).toLocaleDateString("pt-BR", {
         day: "numeric",
