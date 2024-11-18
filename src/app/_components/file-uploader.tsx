@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Upload, X } from "lucide-react";
+import { FileCheck, FileUp, X } from "lucide-react";
 import Image from "next/image";
 import * as React from "react";
 import Dropzone, {
@@ -9,8 +9,14 @@ import Dropzone, {
 } from "react-dropzone";
 
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { useToast } from "@/hooks/use-toast";
 import { cn, formatBytes } from "@/lib/utils";
@@ -99,9 +105,9 @@ export function FileUploader(props: FileUploaderProps) {
     onUpload,
     progresses,
     accept = {
-      "image/*": [],
+      "application/pdf": [],
     },
-    maxSize = 1024 * 1024 * 2,
+    maxSize = 1024 * 1024 * 10,
     maxFileCount = 1,
     multiple = false,
     disabled = false,
@@ -120,7 +126,7 @@ export function FileUploader(props: FileUploaderProps) {
     async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (!multiple && maxFileCount === 1 && acceptedFiles.length > 1) {
         toast({
-          title: "Cannot upload multiple files",
+          title: "Não é possível fazer upload de múltiplos arquivos",
           variant: "destructive",
         });
         return;
@@ -128,7 +134,7 @@ export function FileUploader(props: FileUploaderProps) {
 
       if ((files?.length ?? 0) + acceptedFiles.length > maxFileCount) {
         toast({
-          title: `Cannot upload more than ${maxFileCount} files`,
+          title: `Não é possível fazer upload de mais de ${maxFileCount} arquivos`,
           variant: "destructive",
         });
         return;
@@ -147,7 +153,7 @@ export function FileUploader(props: FileUploaderProps) {
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ file }) => {
           toast({
-            title: `File ${file.name} was rejected`,
+            title: `Arquivo ${file.name} foi rejeitado`,
             variant: "destructive",
           });
         });
@@ -179,7 +185,7 @@ export function FileUploader(props: FileUploaderProps) {
           })
           .catch(() => {
             toast({
-              title: `Failed to upload ${target}`,
+              title: `Falha para fazer upload de ${target}`,
               variant: "destructive",
             });
           });
@@ -236,24 +242,20 @@ export function FileUploader(props: FileUploaderProps) {
             <input {...getInputProps()} />
             {isDragActive ? (
               <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                <div className="rounded-full border border-dashed p-3">
-                  <Upload
-                    className="size-7 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
+                <FileUp
+                  className="size-8 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <p className="font-medium text-muted-foreground">
-                  Drop the files here
+                  Arraste o arquivo aqui
                 </p>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                <div className="rounded-full border border-dashed p-3">
-                  <Upload
-                    className="size-7 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
+                <FileUp
+                  className="size-8 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <div className="flex flex-col gap-4">
                   <p className="text-sm text-muted-foreground">
                     Arraste e solte aqui ou selecione o arquivo para upload
@@ -262,11 +264,7 @@ export function FileUploader(props: FileUploaderProps) {
                   <Button>Procurar e selecionar arquivo</Button>
 
                   <p className="text-xs text-muted-foreground/70">
-                    Tamanho máx.: 10MB
-                    {/* {maxFileCount > 1
-                      ? ` ${maxFileCount === Infinity ? "multiple" : maxFileCount}
-                      files (up to ${formatBytes(maxSize)} each)`
-                      : ` a file with ${formatBytes(maxSize)}`} */}
+                    Tamanho máx.: {formatBytes(maxSize)}
                   </p>
                 </div>
               </div>
@@ -275,18 +273,32 @@ export function FileUploader(props: FileUploaderProps) {
         )}
       </Dropzone>
       {files?.length ? (
-        <ScrollArea className="h-fit w-full px-3">
-          <div className="flex max-h-48 flex-col gap-4">
-            {files?.map((file, index) => (
-              <FileCard
-                key={index}
-                file={file}
-                onRemove={() => onRemove(index)}
-                progress={progresses?.[file.name]}
-              />
-            ))}
+        <div>
+          <div className="h-fit w-full rounded-sm border-[1px] border-neutral-200 p-4">
+            <div className="flex max-h-48 flex-col gap-4">
+              {files?.map((file, index) => (
+                <FileCard
+                  key={index}
+                  file={file}
+                  onRemove={() => onRemove(index)}
+                  progress={progresses?.[file.name]}
+                />
+              ))}
+            </div>
           </div>
-        </ScrollArea>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="px-0" variant="ghost">
+                Pré-visualizar
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogTitle>Pré-visualização do arquivo</DialogTitle>
+              <DialogDescription>{files[0]?.name} </DialogDescription>
+            </DialogContent>
+          </Dialog>
+        </div>
       ) : null}
     </div>
   );
@@ -300,11 +312,11 @@ interface FileCardProps {
 
 function FileCard({ file, progress, onRemove }: FileCardProps) {
   return (
-    <div className="relative flex items-center gap-2.5">
-      <div className="flex flex-1 gap-2.5">
+    <div className="relative flex gap-2.5">
+      <div className="flex flex-1 items-center gap-2.5">
         {isFileWithPreview(file) ? <FilePreview file={file} /> : null}
-        <div className="flex w-full flex-col gap-2">
-          <div className="flex flex-col gap-px">
+        <div className="flex w-full flex-1 flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <p className="line-clamp-1 text-sm font-medium text-foreground/80">
               {file.name}
             </p>
@@ -312,15 +324,15 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
               {formatBytes(file.size)}
             </p>
           </div>
-          {progress ? <Progress value={progress} /> : null}
+          <Progress value={progress} />
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex gap-2 justify-self-start">
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           size="icon"
-          className="size-7"
+          className="size-6"
           onClick={onRemove}
         >
           <X className="size-4" aria-hidden="true" />
@@ -354,6 +366,12 @@ function FilePreview({ file }: FilePreviewProps) {
   }
 
   return (
-    <FileText className="size-10 text-muted-foreground" aria-hidden="true" />
+    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/5">
+      <FileCheck
+        className="text-muted-foreground"
+        size={24}
+        aria-hidden="true"
+      />
+    </div>
   );
 }
