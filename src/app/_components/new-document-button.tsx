@@ -37,13 +37,14 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { documentOrigins } from "@/server/data/documentOrigins";
+import { documentTypes } from "@/server/data/documentTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ArrowRight, Check, ChevronsUpDown, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FileUploader } from "./file-uploader";
-import { documentTypes, originDocuments } from "./table/columns";
 
 const FormSchema = z.object({
   code: z.string().length(4).optional(),
@@ -130,10 +131,10 @@ export function NewDocumentButton() {
                             )}
                           >
                             {field.value
-                              ? originDocuments.find(
+                              ? documentOrigins.find(
                                   (item) => item.value === field.value,
                                 )?.label
-                              : originDocuments[0]?.label}
+                              : documentOrigins[0]?.label}
                             <ChevronsUpDown className="opacity-50" />
                           </Button>
                         </FormControl>
@@ -149,7 +150,7 @@ export function NewDocumentButton() {
                               Documento não encontrado
                             </CommandEmpty>
                             <CommandGroup>
-                              {originDocuments.map((item) => (
+                              {documentOrigins.map((item) => (
                                 <CommandItem
                                   value={item.label}
                                   key={item.value}

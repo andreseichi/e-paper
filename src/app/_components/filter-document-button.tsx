@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/sheet";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { documentTypes } from "@/server/data/documentTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CalendarIcon,
@@ -48,7 +49,6 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MoneyInput } from "./money-input";
-import { documentTypes } from "./table/columns";
 
 const FormSchema = z.object({
   dob: z.date().optional(),

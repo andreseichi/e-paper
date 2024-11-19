@@ -27,11 +27,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { documentOrigins } from "@/server/data/documentOrigins";
+import { documentTypes } from "@/server/data/documentTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown, CircleHelp } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { documentTypes, originDocuments } from "./columns";
 
 const FormTableFilterSchema = z.object({
   origin: z.string(),
@@ -82,7 +83,7 @@ export function FormTableFilter() {
                         )}
                       >
                         {field.value
-                          ? originDocuments.find(
+                          ? documentOrigins.find(
                               (item) => item.value === field.value,
                             )?.label
                           : "Filtrar origem"}
@@ -99,7 +100,7 @@ export function FormTableFilter() {
                       <CommandList>
                         <CommandEmpty>Documento não encontrado</CommandEmpty>
                         <CommandGroup>
-                          {originDocuments.map((item) => (
+                          {documentOrigins.map((item) => (
                             <CommandItem
                               value={item.label}
                               key={item.value}
