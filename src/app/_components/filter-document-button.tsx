@@ -48,6 +48,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MoneyInput } from "./money-input";
+import { documentTypes } from "./table/columns";
 
 const FormSchema = z.object({
   dob: z.date().optional(),
@@ -58,15 +59,6 @@ const FormSchema = z.object({
 });
 
 type FormValues = z.infer<typeof FormSchema>;
-
-const documentTypes = [
-  { label: "Nota fiscal de serviço", value: "nfs" },
-  { label: "Contrato de prestação de serviço", value: "cps" },
-  { label: "Nota fiscal de produto", value: "nfp" },
-  { label: "Nota fiscal de importação", value: "nfi" },
-  { label: "Nota fiscal de exportação", value: "nfe" },
-  { label: "Nota fiscal de transporte", value: "nft" },
-] as const;
 
 const defaultValues: FormValues = {
   dob: undefined,
