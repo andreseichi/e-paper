@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { type ColumnDef } from "@tanstack/react-table";
-import { Ellipsis, Trash, View } from "lucide-react";
+import { Ellipsis, FileText, Trash, View } from "lucide-react";
 
 export type Document = {
   id: string;
@@ -31,6 +31,7 @@ export const columns: ColumnDef<Document>[] = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Selecionar todos os documentos"
+        className="mr-2"
       />
     ),
     cell: ({ row }) => (
@@ -48,6 +49,20 @@ export const columns: ColumnDef<Document>[] = [
   {
     accessorKey: "name",
     header: () => <span className="mr-2">Nome do documento</span>,
+    cell: ({ row }) => (
+      <div className="flex items-center space-x-3">
+        <FileText />
+
+        <div className="flex flex-col justify-center">
+          <span className="text-xs">Cód. 0000</span>
+          <span>
+            {row.original.name.length > 20
+              ? row.original.name.substring(0, 20) + "..."
+              : row.original.name}
+          </span>
+        </div>
+      </div>
+    ),
     footer: ({ column }) => (
       <div className="flex flex-col text-xs font-normal text-neutral-500">
         Total{" "}
