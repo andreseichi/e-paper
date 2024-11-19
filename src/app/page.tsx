@@ -4,8 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Search } from "lucide-react";
 import { FilterDocumentButton } from "./_components/filter-document-button";
+import { NewDocumentButton } from "./_components/new-document-button";
 import { columns, type Document } from "./_components/table/columns";
 import { DataTable } from "./_components/table/data-table";
+import { FormTableFilter } from "./_components/table/form-table-filter";
 
 const tableData = [
   {
@@ -176,6 +178,14 @@ export default function HomePage() {
           </div>
 
           <Separator className="my-6" />
+
+          <div className="mb-4 flex flex-1">
+            <div className="flex items-center space-x-8">
+              <FormTableFilter />
+            </div>
+
+            <NewDocumentButton />
+          </div>
 
           <DataTable columns={columns} data={tableData} />
         </main>
