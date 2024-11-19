@@ -261,7 +261,9 @@ export function FileUploader(props: FileUploaderProps) {
                     Arraste e solte aqui ou selecione o arquivo para upload
                   </p>
 
-                  <Button className="pointer-events-none">Procurar e selecionar arquivo</Button>
+                  <Button className="pointer-events-none">
+                    Procurar e selecionar arquivo
+                  </Button>
 
                   <p className="text-xs text-muted-foreground/70">
                     Tamanho máx.: {formatBytes(maxSize)}
