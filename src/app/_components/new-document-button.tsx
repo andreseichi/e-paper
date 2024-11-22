@@ -59,17 +59,16 @@ const FormSchema = z.object({
   type: z.string({
     message: "Tipo do documento é obrigatório",
   }),
-  file: z.array(
-    z
-      .instanceof(File)
-      .refine(
-        (file) => file.size < 10 * 1024 * 1024,
-        "Arquivo deve ser menor que 10MB",
-      ),
-    {
-      message: "Arquivo é obrigatório",
-    },
-  ),
+  file: z
+    .array(
+      z
+        .instanceof(File)
+        .refine(
+          (file) => file.size < 10 * 1024 * 1024,
+          "Arquivo deve ser menor que 10MB",
+        ),
+    )
+    .optional(),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
@@ -279,7 +278,7 @@ export function NewDocumentButton() {
               <DialogClose asChild>
                 <Button variant="outline">Cancelar</Button>
               </DialogClose>
-              <Button>
+              <Button type="submit">
                 Criar documento <ArrowRight />
               </Button>
             </DialogFooter>
