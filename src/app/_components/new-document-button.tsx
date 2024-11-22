@@ -45,21 +45,31 @@ import { ArrowRight, Check, ChevronsUpDown, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FileUploader } from "./file-uploader";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
-  code: z.string().length(4).optional(),
-  origin: z.string().optional(),
-  type: z.string().optional(),
-  file: z
-    .array(
-      z
-        .instanceof(File)
-        .refine(
-          (file) => file.size < 10 * 1024 * 1024,
-          "Arquivo deve ser menor que 10MB",
-        ),
-    )
-    .optional(),
+  code: z
+    .string({
+      message: "Código do documento é obrigatório",
+    })
+    .length(4, "Código deve ter 4 dígitos"),
+  origin: z.string({
+    message: "Origem do documento é obrigatória",
+  }),
+  type: z.string({
+    message: "Tipo do documento é obrigatório",
+  }),
+  file: z.array(
+    z
+      .instanceof(File)
+      .refine(
+        (file) => file.size < 10 * 1024 * 1024,
+        "Arquivo deve ser menor que 10MB",
+      ),
+    {
+      message: "Arquivo é obrigatório",
+    },
+  ),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
@@ -68,6 +78,17 @@ export function NewDocumentButton() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
   });
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  }
 
   return (
     <Dialog>
@@ -79,7 +100,7 @@ export function NewDocumentButton() {
 
       <DialogContent>
         <Form {...form}>
-          <form>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader className="mb-6">
               <DialogTitle>Criar novo documento</DialogTitle>
               <DialogDescription>
@@ -106,6 +127,7 @@ export function NewDocumentButton() {
                         </InputOTPGroup>
                       </InputOTP>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
