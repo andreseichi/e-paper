@@ -1,29 +1,25 @@
-# Create T3 App
+# E-paper
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+<div align="center">
 
-## What's next? How do I make an app with this?
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![Radix UI](https://img.shields.io/badge/radix%20ui-161618.svg?style=for-the-badge&logo=radix-ui&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+  <img alt="Github repo size" src="https://img.shields.io/github/repo-size/andreseichi/e-paper?style=for-the-badge">
+  <a href="https://github.com/andreseichi/e-paper/commits"><img alt="Last commit" src="https://img.shields.io/github/last-commit/andreseichi/e-paper?style=for-the-badge" /></a>
+</div>
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+<div align="center">
+  <img src="./screenshots/screenshot.png" alt="Screenshot">
+  <img src="./screenshots/screenshot2.png" alt="Screenshot">
+  <img src="./screenshots/screenshot3.png" alt="Screenshot">
+  <img src="./screenshots/screenshot4.png" alt="Screenshot">
+</div>
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+> Dashboard para upload de arquivos .pdf
 
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+<span>
+  Gerencie seus arquivos pdf's, realizando upload de seus documentos e visualizando-os em uma dashboard moderna e fácil utilização
+</span>
